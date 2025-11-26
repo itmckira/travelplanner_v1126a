@@ -18,7 +18,13 @@ const travelRecordSchema = new mongoose.Schema({
   },
   endDate: {
     type: Date,
-    required: [true, 'Please add an end date']
+    required: [true, 'Please add an end date'],
+    validate: {
+      validator: function(value) {
+        return value >= this.startDate;
+      },
+      message: 'End date must be after or equal to start date'
+    }
   },
   description: {
     type: String,

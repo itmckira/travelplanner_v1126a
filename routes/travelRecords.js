@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const TravelRecord = require('../models/TravelRecord');
 
 // @route   GET /api/travel-records
@@ -26,6 +27,14 @@ router.get('/', async (req, res) => {
 // @access  Public
 router.get('/:id', async (req, res) => {
   try {
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid travel record ID'
+      });
+    }
+
     const travelRecord = await TravelRecord.findById(req.params.id);
     
     if (!travelRecord) {
@@ -71,6 +80,14 @@ router.post('/', async (req, res) => {
 // @access  Public
 router.put('/:id', async (req, res) => {
   try {
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid travel record ID'
+      });
+    }
+
     const travelRecord = await TravelRecord.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -104,6 +121,14 @@ router.put('/:id', async (req, res) => {
 // @access  Public
 router.delete('/:id', async (req, res) => {
   try {
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid travel record ID'
+      });
+    }
+
     const travelRecord = await TravelRecord.findByIdAndDelete(req.params.id);
 
     if (!travelRecord) {
